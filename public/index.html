@@ -205,6 +205,13 @@
             font-size: clamp(0.53rem, 1.7vw, 0.65rem);
             letter-spacing: 0.09em;
         }
+        @media (max-width: 639px) {
+            .btn-mediva--wide-cta--long {
+                min-height: 44px;
+                padding: 0.68em 1.8em;
+                font-size: 0.58rem;
+            }
+        }
         .btn-mediva--compact {
             min-height: 34px;
             padding: 0.44em 0.92em;
@@ -328,9 +335,9 @@
             justify-content: center;
             border: none;
             background: transparent;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.88);
             cursor: pointer;
-            transition: filter 0.25s ease, transform 0.2s ease, color 0.2s ease;
+            transition: filter 0.25s ease, transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
         }
         @media (min-width: 640px) {
             .showcase-fs-btn {
@@ -342,9 +349,13 @@
                 min-height: 3rem;
             }
         }
-        .showcase-fs-btn svg {
+        .showcase-fs-btn .btn-label {
             position: relative;
             z-index: 1;
+            font-size: 0.52rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 500;
         }
         
         /* Mute toggle button */
@@ -362,9 +373,9 @@
             justify-content: center;
             border: none;
             background: transparent;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.88);
             cursor: pointer;
-            transition: filter 0.25s ease, transform 0.2s ease, color 0.2s ease;
+            transition: filter 0.25s ease, transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
         }
         @media (min-width: 640px) {
             .showcase-mute-btn {
@@ -376,13 +387,43 @@
                 min-height: 3rem;
             }
         }
-        .showcase-mute-btn svg {
+        .showcase-mute-btn .btn-label {
             position: relative;
             z-index: 1;
+            font-size: 0.5rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 500;
         }
         .showcase-mute-btn:hover {
             filter: brightness(1.2);
             color: #fff;
+        }
+        .showcase-control {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #medivaShowcase.showcase-controls-active .showcase-control {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #medivaShowcase.showcase-controls-active .showcase-instruction {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .showcase-instruction {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 35;
+            font-size: 0.62rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.72);
+            transition: opacity 0.25s ease;
+            text-align: center;
+            white-space: nowrap;
         }
 
         /* Modal forms */
@@ -819,23 +860,13 @@
     <section class="py-16 sm:py-20 md:py-24 scroll-anim w-full box-border">
         <div class="w-full min-w-0 px-0 sm:px-6 md:px-10 lg:px-14 xl:px-20 max-w-[1920px] mx-auto">
             <div id="medivaShowcase" class="relative w-full aspect-video rounded-none sm:rounded-2xl md:rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden border-y sm:border border-white/10 bg-[#080808] group">
-                <button type="button" id="showcaseFullscreenBtn" class="btn-mediva btn-mediva--icon showcase-fs-btn" aria-label="Enter fullscreen" title="Fullscreen">
-                    <svg class="w-5 h-5 icon-enter-fs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                        <path d="M9 3H5a2 2 0 0 0-2 2v4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M15 21h4a2 2 0 0 0 2-2v-4"/>
-                    </svg>
-                    <svg class="w-5 h-5 icon-exit-fs hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                        <path d="M4 14v4h4M20 10V6h-4M4 10V6h4M20 14v4h-4M14 4h4v4M10 20H6v-4"/>
-                    </svg>
+                <button type="button" id="showcaseFullscreenBtn" class="btn-mediva btn-mediva--icon showcase-fs-btn showcase-control" aria-label="Enter fullscreen" title="Fullscreen">
+                    <span class="btn-label">FULL</span>
                 </button>
                 
                 <!-- Mute/Unmute Button -->
-                <button type="button" id="muteToggleBtn" class="btn-mediva btn-mediva--icon showcase-mute-btn" aria-label="Toggle mute" title="Mute">
-                    <svg class="w-5 h-5 icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                        <path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/>
-                    </svg>
-                    <svg class="w-5 h-5 icon-sound-off hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                        <path d="M11 5L6 9H2v6h4l5 4V5zM1 1l22 22M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/>
-                    </svg>
+                <button type="button" id="muteToggleBtn" class="btn-mediva btn-mediva--icon showcase-mute-btn showcase-control" aria-label="Toggle mute" title="Sound">
+                    <span class="btn-label">SOUND</span>
                 </button>
                 
                 <!-- Video Element -->
@@ -845,11 +876,12 @@
                 
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10 pointer-events-none"></div>
                 <div class="absolute inset-0 flex flex-col items-center justify-center z-20 px-4">
-                    <button type="button" class="btn-mediva btn-mediva--play sm:hover:scale-105 transition-transform" aria-label="Play showcase">
-                        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-white drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <button type="button" id="showcasePlayBtn" class="btn-mediva btn-mediva--play showcase-control sm:hover:scale-105 transition-transform" aria-label="Play showcase">
+                        <span class="btn-label text-[10px] tracking-[0.18em] uppercase">PLAY</span>
                     </button>
                     <p class="mt-6 text-xs sm:text-sm uppercase tracking-[0.35em] sm:tracking-[0.45em] text-white/75 text-center">Experience the interface</p>
                 </div>
+                <p class="showcase-instruction">Tap video to enable controls</p>
                 <div class="showcase-bg absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80')] bg-cover bg-center group-hover:scale-105 transition-transform duration-1000"></div>
                 <div class="absolute top-0 left-0 w-full h-[1px] bg-white/30 shadow-[0_0_20px_white] animate-[scan_8s_infinite] pointer-events-none z-[5]"></div>
             </div>
@@ -959,7 +991,7 @@
         <div class="w-full min-w-0 max-w-[1920px] mx-auto">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 lg:gap-16 mb-20 sm:mb-24 md:mb-32">
                 <div class="col-span-1 sm:col-span-2 lg:col-span-2 text-center sm:text-left">
-                    <img src="/images/medialogo.png" alt="Mediva" class="footer-logo mb-8 sm:mb-10" width="140" height="56">
+                    <img src="/images/medialogo.png" alt="Mediva" class="footer-logo mb-8 sm:mb-10 mx-auto sm:mx-0" width="140" height="56">
                     <h3 class="text-3xl sm:text-4xl md:text-5xl h-thin mb-8 sm:mb-10 leading-tight text-white/85 max-w-2xl mx-auto sm:mx-0">
                         Bridging the gap between <span class="text-white h-light">intelligence</span> and <span class="text-white h-light">healthcare</span>.
                     </h3>
@@ -1095,13 +1127,39 @@
             }
         });
 
-        (function initShowcaseFullscreen() {
+        (function initShowcaseControls() {
             const stage = document.getElementById('medivaShowcase');
-            const btn = document.getElementById('showcaseFullscreenBtn');
-            if (!stage || !btn) return;
+            const video = document.getElementById('showcaseVideo');
+            const fsBtn = document.getElementById('showcaseFullscreenBtn');
+            const muteBtn = document.getElementById('muteToggleBtn');
+            const playBtn = document.getElementById('showcasePlayBtn');
+            if (!stage || !video || !fsBtn || !muteBtn || !playBtn) return;
 
-            const iconIn = btn.querySelector('.icon-enter-fs');
-            const iconOut = btn.querySelector('.icon-exit-fs');
+            // Default behavior: autoplay + loop from start, muted until user interaction.
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+
+            let controlsActive = false;
+
+            function setControlsActive(active) {
+                controlsActive = active;
+                stage.classList.toggle('showcase-controls-active', active);
+            }
+
+            function updateMuteUi() {
+                muteBtn.textContent = video.muted ? 'SOUND OFF' : 'SOUND ON';
+                muteBtn.setAttribute('aria-label', video.muted ? 'Unmute video' : 'Mute video');
+                muteBtn.setAttribute('title', video.muted ? 'Unmute' : 'Mute');
+            }
+
+            function updatePlayUi() {
+                const playing = !video.paused && !video.ended;
+                playBtn.textContent = playing ? 'PAUSE' : 'PLAY';
+                playBtn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+                playBtn.setAttribute('title', playing ? 'Pause' : 'Play');
+            }
 
             function isStageFullscreen() {
                 return (document.fullscreenElement === stage) ||
@@ -1110,12 +1168,9 @@
 
             function updateFsUi() {
                 const on = isStageFullscreen();
-                btn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Enter fullscreen');
-                btn.setAttribute('title', on ? 'Exit fullscreen' : 'Fullscreen');
-                if (iconIn && iconOut) {
-                    iconIn.classList.toggle('hidden', on);
-                    iconOut.classList.toggle('hidden', !on);
-                }
+                fsBtn.textContent = on ? 'EXIT' : 'FULL';
+                fsBtn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Enter fullscreen');
+                fsBtn.setAttribute('title', on ? 'Exit fullscreen' : 'Fullscreen');
             }
 
             function requestFs(el) {
@@ -1129,54 +1184,52 @@
                 if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
             }
 
-            btn.addEventListener('click', () => {
-                if (isStageFullscreen()) {
-                    exitFs();
-                } else {
-                    requestFs(stage).catch(() => {});
-                }
-            });
-
-            document.addEventListener('fullscreenchange', updateFsUi);
-            document.addEventListener('webkitfullscreenchange', updateFsUi);
-            updateFsUi();
-        })();
-
-        // Video mute/unmute toggle
-        (function initVideoMute() {
-            const video = document.getElementById('showcaseVideo');
-            const muteBtn = document.getElementById('muteToggleBtn');
-            
-            if (!video || !muteBtn) return;
-
-            const soundOnIcon = muteBtn.querySelector('.icon-sound-on');
-            const soundOffIcon = muteBtn.querySelector('.icon-sound-off');
-
-            function updateMuteUi() {
-                if (video.muted) {
-                    muteBtn.setAttribute('aria-label', 'Unmute');
-                    muteBtn.setAttribute('title', 'Unmute');
-                    if (soundOnIcon && soundOffIcon) {
-                        soundOnIcon.classList.add('hidden');
-                        soundOffIcon.classList.remove('hidden');
-                    }
-                } else {
-                    muteBtn.setAttribute('aria-label', 'Mute');
-                    muteBtn.setAttribute('title', 'Mute');
-                    if (soundOnIcon && soundOffIcon) {
-                        soundOnIcon.classList.remove('hidden');
-                        soundOffIcon.classList.add('hidden');
-                    }
-                }
+            function activateInteractiveMode() {
+                if (!controlsActive) setControlsActive(true);
+                video.muted = false;
+                video.play().catch(() => {});
+                updateMuteUi();
+                updatePlayUi();
             }
 
-            muteBtn.addEventListener('click', () => {
+            // First click on video/stage reveals controls and enables audio.
+            stage.addEventListener('click', (e) => {
+                if (e.target.closest('button')) return;
+                activateInteractiveMode();
+            });
+
+            playBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!controlsActive) activateInteractiveMode();
+                if (video.paused) video.play().catch(() => {});
+                else video.pause();
+                updatePlayUi();
+            });
+
+            muteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!controlsActive) activateInteractiveMode();
                 video.muted = !video.muted;
                 updateMuteUi();
             });
 
-            // Initialize UI state
+            fsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!controlsActive) activateInteractiveMode();
+                if (isStageFullscreen()) exitFs();
+                else requestFs(stage).catch(() => {});
+            });
+
+            video.addEventListener('play', updatePlayUi);
+            video.addEventListener('pause', updatePlayUi);
+            document.addEventListener('fullscreenchange', updateFsUi);
+            document.addEventListener('webkitfullscreenchange', updateFsUi);
+
+            // Initial UI state.
+            setControlsActive(false);
             updateMuteUi();
+            updatePlayUi();
+            updateFsUi();
         })();
 
         const observer = new IntersectionObserver((entries) => {
