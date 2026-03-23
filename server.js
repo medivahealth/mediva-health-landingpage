@@ -31,6 +31,17 @@ app.set("trust proxy", 1);
 
 app.use(express.json({ limit: "256kb" }));
 
+// Add CORS for Vercel
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(
   session({
     name: "mediva.sid",
@@ -146,14 +157,22 @@ app.post("/api/submissions", async (req, res) => {
   try {
     const { type, ...rest } = req.body || {};
     if (type !== "Join" && type !== "Contact") {
-      return res.status(400).json({ ok: false, error: "Invalid type" });
+      return res.status(400).json({ ok: false, error: "Invalid type. Must be 'Join' or 'Contact'." });
     }
 
+    console.log(`📝 Received ${type} submission:`, JSON.stringify(rest, null, 2));
+    
     const { id } = await addSubmission(type, rest);
+    console.log(`✅ Submission saved with ID: ${id}`);
     return res.json({ ok: true, id });
   } catch (e) {
-    console.error(e);
-    return res.status(500).json({ ok: false, error: "Server error" });
+    console.error("❌ Submission error:", e.message);
+    console.error("Stack trace:", e.stack);
+    return res.status(500).json({ 
+      ok: false, 
+      error: "Server error", 
+      details: process.env.NODE_ENV === 'development' ? e.message : undefined 
+    });
   }
 });
 
