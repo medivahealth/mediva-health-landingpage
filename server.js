@@ -26,6 +26,7 @@ const SESSION_SECRET =
   process.env.SESSION_SECRET || "mediva-change-me-in-production-min-32-chars!!";
 
 let useMongo = false;
+let allowFileStorage = true;
 
 app.set("trust proxy", 1);
 
@@ -107,6 +108,9 @@ async function addSubmission(type, data) {
     const doc = await Submission.create({ type, data });
     return { id: doc._id.toString() };
   }
+  if (!allowFileStorage) {
+    throw new Error("Storage not configured. Set MONGODB_URI in production.");
+  }
   const entry = {
     id: crypto.randomUUID(),
     type,
@@ -131,6 +135,7 @@ async function listSubmissions() {
       })
     );
   }
+  if (!allowFileStorage) return [];
   return await readSubmissionsFile();
 }
 
@@ -140,6 +145,7 @@ async function deleteSubmission(id) {
     const r = await Submission.findByIdAndDelete(id);
     return !!r;
   }
+  if (!allowFileStorage) return false;
   const list = await readSubmissionsFile();
   const next = list.filter((s) => s.id !== id);
   if (next.length === list.length) return false;
@@ -168,6 +174,12 @@ app.post("/api/submissions", async (req, res) => {
   } catch (e) {
     console.error("❌ Submission error:", e.message);
     console.error("Stack trace:", e.stack);
+    if (!allowFileStorage && !useMongo) {
+      return res.status(503).json({
+        ok: false,
+        error: "Database not configured. Set MONGODB_URI in Vercel environment variables.",
+      });
+    }
     return res.status(500).json({ 
       ok: false, 
       error: "Server error", 
@@ -246,10 +258,11 @@ app.get("*", (_req, res) => {
 
 async function start() {
   const uri = process.env.MONGODB_URI;
-  
+
   // On Vercel/Production, MongoDB is REQUIRED
   const isProduction = process.env.NODE_ENV === 'production';
-  
+  const isVercel = process.env.VERCEL === "1";
+
   if (uri) {
     try {
       // Configure mongoose for serverless/vercel
@@ -263,36 +276,46 @@ async function start() {
       console.log("Database:", mongoose.connection.db.databaseName);
     } catch (err) {
       console.error("❌ MongoDB connection failed:", err.message);
-      
+
       if (isProduction) {
         console.error("🚨 CRITICAL: MongoDB is REQUIRED in production (Vercel has read-only filesystem)");
         console.error("💡 Fix: Check MONGODB_URI environment variable and MongoDB Atlas network access");
-        throw err; // Crash on production if MongoDB fails
+        useMongo = false;
+        allowFileStorage = false;
+      } else {
+        console.error("⚠️ Falling back to JSON file storage (development only).");
+        console.error("💡 Tip: Check your MongoDB URI and network access settings.");
+        useMongo = false;
+        allowFileStorage = true;
+        await ensureDataFile();
       }
-      
-      console.error("⚠️ Falling back to JSON file storage (development only).");
-      console.error("💡 Tip: Check your MongoDB URI and network access settings.");
-      useMongo = false;
-      await ensureDataFile();
     }
   } else {
     if (isProduction) {
       console.error("🚨 CRITICAL: MONGODB_URI not set in production!");
       console.error("💡 Add MONGODB_URI to Vercel Environment Variables immediately!");
-      throw new Error("MONGODB_URI required in production");
+      useMongo = false;
+      allowFileStorage = false;
+    } else {
+      console.warn("MONGODB_URI not set — using JSON file storage (data/submissions.json)");
+      useMongo = false;
+      allowFileStorage = true;
+      await ensureDataFile();
     }
-    
-    console.warn("MONGODB_URI not set — using JSON file storage (data/submissions.json)");
-    await ensureDataFile();
   }
 
-  app.listen(port, () => {
-    console.log(`✅ Mediva running on port ${port}`);
+  if (!isVercel) {
+    app.listen(port, () => {
+      console.log(`✅ Mediva running on port ${port}`);
+      console.log(`🔐 Admin dashboard: ${ADMIN_PATH}`);
+      console.log(`💾 Storage: ${useMongo ? "MongoDB" : allowFileStorage ? "JSON file (development only)" : "not configured"}`);
+      console.log(`🌐 Local URL: http://localhost:${port}`);
+      console.log(`\n📝 Test forms at: http://localhost:${port} (click Early Join or Contact)`);
+    });
+  } else {
     console.log(`🔐 Admin dashboard: ${ADMIN_PATH}`);
-    console.log(`💾 Storage: ${useMongo ? "MongoDB" : "JSON file (development only)"}`);
-    console.log(`🌐 Local URL: http://localhost:${port}`);
-    console.log(`\n📝 Test forms at: http://localhost:${port} (click Early Join or Contact)`);
-  });
+    console.log(`💾 Storage: ${useMongo ? "MongoDB" : allowFileStorage ? "JSON file" : "not configured (set MONGODB_URI)"}`);
+  }
 }
 
 // Export for Vercel serverless
