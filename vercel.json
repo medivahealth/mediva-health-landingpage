@@ -29,11 +29,11 @@
       "dest": "public/$1"
     },
     {
-      "src": "/",
+      "src": "/$",
       "dest": "server.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/((?!api/|images/|assets/|admin/).*)",
       "dest": "server.js"
     }
   ],
