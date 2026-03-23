@@ -236,10 +236,12 @@ async function start() {
         socketTimeoutMS: 45000,
       });
       useMongo = true;
-      console.log("MongoDB connected");
+      console.log("✅ MongoDB connected successfully");
+      console.log("Database:", mongoose.connection.db.databaseName);
     } catch (err) {
-      console.error("MongoDB connection failed:", err.message);
-      console.error("Falling back to JSON file storage.");
+      console.error("❌ MongoDB connection failed:", err.message);
+      console.error("⚠️ Falling back to JSON file storage.");
+      console.error("💡 Tip: Check your MongoDB URI and network access settings.");
       useMongo = false;
       await ensureDataFile();
     }
@@ -249,9 +251,11 @@ async function start() {
   }
 
   app.listen(port, () => {
-    console.log(`Mediva running on port ${port}`);
-    console.log(`Admin dashboard: ${ADMIN_PATH}`);
-    console.log(`Storage: ${useMongo ? "MongoDB" : "JSON file"}`);
+    console.log(`✅ Mediva running on port ${port}`);
+    console.log(`🔐 Admin dashboard: ${ADMIN_PATH}`);
+    console.log(`💾 Storage: ${useMongo ? "MongoDB" : "JSON file"}`);
+    console.log(`🌐 Local URL: http://localhost:${port}`);
+    console.log(`\n📝 Test forms at: http://localhost:${port} (click Early Join or Contact)`);
   });
 }
 
