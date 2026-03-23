@@ -246,6 +246,10 @@ app.get("*", (_req, res) => {
 
 async function start() {
   const uri = process.env.MONGODB_URI;
+  
+  // On Vercel/Production, MongoDB is REQUIRED
+  const isProduction = process.env.NODE_ENV === 'production';
+  
   if (uri) {
     try {
       // Configure mongoose for serverless/vercel
@@ -259,12 +263,25 @@ async function start() {
       console.log("Database:", mongoose.connection.db.databaseName);
     } catch (err) {
       console.error("❌ MongoDB connection failed:", err.message);
-      console.error("⚠️ Falling back to JSON file storage.");
+      
+      if (isProduction) {
+        console.error("🚨 CRITICAL: MongoDB is REQUIRED in production (Vercel has read-only filesystem)");
+        console.error("💡 Fix: Check MONGODB_URI environment variable and MongoDB Atlas network access");
+        throw err; // Crash on production if MongoDB fails
+      }
+      
+      console.error("⚠️ Falling back to JSON file storage (development only).");
       console.error("💡 Tip: Check your MongoDB URI and network access settings.");
       useMongo = false;
       await ensureDataFile();
     }
   } else {
+    if (isProduction) {
+      console.error("🚨 CRITICAL: MONGODB_URI not set in production!");
+      console.error("💡 Add MONGODB_URI to Vercel Environment Variables immediately!");
+      throw new Error("MONGODB_URI required in production");
+    }
+    
     console.warn("MONGODB_URI not set — using JSON file storage (data/submissions.json)");
     await ensureDataFile();
   }
@@ -272,7 +289,7 @@ async function start() {
   app.listen(port, () => {
     console.log(`✅ Mediva running on port ${port}`);
     console.log(`🔐 Admin dashboard: ${ADMIN_PATH}`);
-    console.log(`💾 Storage: ${useMongo ? "MongoDB" : "JSON file"}`);
+    console.log(`💾 Storage: ${useMongo ? "MongoDB" : "JSON file (development only)"}`);
     console.log(`🌐 Local URL: http://localhost:${port}`);
     console.log(`\n📝 Test forms at: http://localhost:${port} (click Early Join or Contact)`);
   });
