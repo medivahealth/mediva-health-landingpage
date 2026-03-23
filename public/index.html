@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediva | World-Class Healthcare</title>
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" href="/images/applogo1.png">
+    <link rel="apple-touch-icon" href="/images/applogo1.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --helvetica-thin: 100;
+            --helvetica-light: 200;
+            --helvetica-reg: 400;
+            --helvetica-med: 500;
+        }
+
+        /* Hide vertical scrollbar — page still scrolls (wheel, trackpad, touch) */
+        html {
+            width: 100%;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        body {
+            width: 100%;
+            max-width: 100vw;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+            font-weight: var(--helvetica-light);
+            font-size: clamp(1rem, 0.25vw + 0.95rem, 1.125rem);
+            line-height: 1.55;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .serif-italic {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .h-thin { font-weight: 100; }
+        .h-light { font-weight: 200; }
+        .h-reg { font-weight: 400; }
+        .h-med { font-weight: 500; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); filter: brightness(1); }
+            50% { transform: translateY(-20px) scale(1.05); filter: brightness(1.2); }
+        }
+
+        .hero-orb {
+            animation: float 8s infinite ease-in-out;
+            width: 100%;
+            height: auto;
+            max-width: min(100%, 70vw, 340px);
+        }
+        @media (min-width: 480px) {
+            .hero-orb { max-width: min(100%, 380px); }
+        }
+        @media (min-width: 640px) {
+            .hero-orb { max-width: min(100%, 400px); }
+        }
+        @media (min-width: 1024px) {
+            .hero-orb { max-width: min(100%, 420px); }
+        }
+        @media (min-width: 1280px) {
+            .hero-orb { max-width: min(100%, 500px); }
+        }
+        @media (min-width: 1536px) {
+            .hero-orb { max-width: min(100%, 560px); }
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid rgba(255,255,255,0.07);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .glass-card:hover {
+                border-color: rgba(255,255,255,0.15);
+                background: rgba(255,255,255,0.05);
+                transform: translateY(-5px);
+            }
+        }
+
+        .btn-pill {
+            padding: 0.85rem 2rem;
+            border-radius: 9999px;
+            transition: all 0.3s;
+            font-size: clamp(0.875rem, 0.2vw + 0.8rem, 1rem);
+            letter-spacing: 0.06em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Pill SVG on ::before so label always sits inside the graphic; size follows content */
+        .btn-mediva {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            width: fit-content;
+            max-width: 100%;
+            position: relative;
+            isolation: isolate;
+            border: none;
+            border-radius: 9999px;
+            overflow: hidden;
+            color: #fff;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: clamp(0.6rem, 1.35vw, 0.72rem);
+            line-height: 1.2;
+            padding: 0.75em 1.6em;
+            min-height: 48px;
+            cursor: pointer;
+            transition: filter 0.25s ease, transform 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            white-space: nowrap;
+            background: transparent;
+        }
+        .btn-mediva::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: inherit;
+            background-color: #0a0a0a;
+            background-image: url('/assets/button.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+            -webkit-background-size: 100% 100%;
+            pointer-events: none;
+        }
+        .btn-mediva:hover {
+            filter: brightness(1.14) contrast(1.02);
+        }
+        .btn-mediva:active {
+            transform: scale(0.98);
+        }
+        .btn-mediva:focus-visible {
+            outline: 2px solid rgba(255,255,255,0.45);
+            outline-offset: 3px;
+        }
+        .btn-mediva--block {
+            width: 100%;
+            display: flex;
+            white-space: normal;
+            text-align: center;
+            padding-left: clamp(1rem, 4vw, 2rem);
+            padding-right: clamp(1rem, 4vw, 2rem);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        /* Modal submits — full width; padding scales with text so label stays inside pill */
+        .btn-mediva--submit-app {
+            width: 100%;
+            min-height: 52px;
+            padding: 0.85em clamp(1.25rem, 8vw, 3rem);
+            font-size: clamp(0.62rem, 2.8vw, 0.78rem);
+            letter-spacing: 0.08em;
+            line-height: 1.3;
+        }
+        /* Hero + philosophy: full width on small screens; pill hugs text on sm+ */
+        .btn-mediva--wide-cta {
+            width: 100%;
+            max-width: 100%;
+        }
+        @media (min-width: 640px) {
+            .btn-mediva--wide-cta {
+                width: fit-content;
+                max-width: min(100%, 36rem);
+                min-height: 52px;
+                padding: 0.8em clamp(1.4rem, 3.5vw, 2.6rem);
+                font-size: clamp(0.6rem, 1.25vw, 0.74rem);
+            }
+        }
+        /* Longer label — slightly more horizontal padding, still content-sized */
+        @media (min-width: 640px) {
+            .btn-mediva--wide-cta--long {
+                padding-left: clamp(1.6rem, 4vw, 3rem);
+                padding-right: clamp(1.6rem, 4vw, 3rem);
+                font-size: clamp(0.58rem, 1.15vw, 0.72rem);
+                letter-spacing: 0.09em;
+            }
+        }
+        .btn-mediva--compact {
+            min-height: 44px;
+            padding: 0.55em 1.15em;
+            font-size: 0.56rem;
+            letter-spacing: 0.12em;
+        }
+        .btn-mediva--lg {
+            min-height: 52px;
+            padding: 0.75em clamp(1.1rem, 3.2vw, 2.2rem);
+            font-size: clamp(0.64rem, 1.4vw, 0.76rem);
+        }
+        .btn-mediva--lg:not(.btn-mediva--block) {
+            white-space: nowrap;
+        }
+        /* Play — perfect circle; SVG covers disc (no oval stretch) */
+        .btn-mediva--play {
+            --play-size: clamp(3.75rem, 11vw, 5.75rem);
+            width: var(--play-size);
+            height: var(--play-size);
+            min-width: var(--play-size);
+            min-height: var(--play-size);
+            max-width: var(--play-size);
+            max-height: var(--play-size);
+            padding: 0;
+            flex-shrink: 0;
+            border-radius: 50%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            /* Clip to circle on engines that ignore overflow on flex items */
+            clip-path: circle(50% at 50% 50%);
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+        }
+        .btn-mediva--play::before {
+            border-radius: 50%;
+            background-size: cover;
+            -webkit-background-size: cover;
+            background-position: center center;
+        }
+        .btn-mediva--play svg {
+            position: relative;
+            z-index: 1;
+            margin-left: 4px;
+        }
+
+        /* Icon / close / FS — same SVG, circular crop */
+        .btn-mediva--icon {
+            padding: 0;
+            min-height: 0;
+            border-radius: 50%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            clip-path: circle(50% at 50% 50%);
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: 300;
+        }
+        .btn-mediva--icon::before {
+            border-radius: 50%;
+            background-size: cover;
+            -webkit-background-size: cover;
+            background-position: center center;
+        }
+        .btn-mediva--icon:hover {
+            color: #fff;
+        }
+        /* Popups: compact buttons (submit, close, ✕) */
+        .modal .btn-mediva--icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
+            font-size: 0.95rem;
+        }
+        .modal .btn-mediva--submit-app {
+            min-height: 44px;
+            padding: 0.6em clamp(1rem, 4vw, 2rem);
+            font-size: clamp(0.55rem, 2.2vw, 0.7rem);
+            letter-spacing: 0.08em;
+            line-height: 1.3;
+        }
+        .modal .btn-mediva--block.btn-mediva--lg:not(.btn-mediva--submit-app) {
+            min-height: 44px;
+            padding: 0.6em clamp(1.1rem, 4vw, 1.8rem);
+            font-size: clamp(0.55rem, 2.2vw, 0.7rem);
+            letter-spacing: 0.1em;
+        }
+
+        /* Video showcase fullscreen */
+        #medivaShowcase:fullscreen,
+        #medivaShowcase:-webkit-full-screen {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100dvh;
+            max-height: none !important;
+            aspect-ratio: unset !important;
+            border-radius: 0 !important;
+            border: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        #medivaShowcase:fullscreen .showcase-bg,
+        #medivaShowcase:-webkit-full-screen .showcase-bg {
+            opacity: 0.55;
+        }
+        .showcase-fs-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            z-index: 35;
+            width: 2.75rem;
+            height: 2.75rem;
+            min-width: 2.75rem;
+            min-height: 2.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: filter 0.25s ease, transform 0.2s ease, color 0.2s ease;
+        }
+        @media (min-width: 640px) {
+            .showcase-fs-btn {
+                top: 1.25rem;
+                right: 1.25rem;
+                width: 3rem;
+                height: 3rem;
+                min-width: 3rem;
+                min-height: 3rem;
+            }
+        }
+        .showcase-fs-btn svg {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Mute toggle button */
+        .showcase-mute-btn {
+            position: absolute;
+            top: 0.75rem;
+            left: 0.75rem;
+            z-index: 35;
+            width: 2.75rem;
+            height: 2.75rem;
+            min-width: 2.75rem;
+            min-height: 2.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: filter 0.25s ease, transform 0.2s ease, color 0.2s ease;
+        }
+        @media (min-width: 640px) {
+            .showcase-mute-btn {
+                top: 1.25rem;
+                left: 1.25rem;
+                width: 3rem;
+                height: 3rem;
+                min-width: 3rem;
+                min-height: 3rem;
+            }
+        }
+        .showcase-mute-btn svg {
+            position: relative;
+            z-index: 1;
+        }
+        .showcase-mute-btn:hover {
+            filter: brightness(1.2);
+            color: #fff;
+        }
+
+        /* Modal forms */
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .form-field-grid {
+            display: grid;
+            gap: 1.15rem;
+        }
+        @media (min-width: 768px) {
+            .form-field-grid--2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .modal-panel .form-label {
+            display: block;
+            font-size: 0.625rem;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            font-weight: 500;
+            margin-bottom: 0.45rem;
+        }
+        .modal-panel .form-input,
+        .modal-panel .form-textarea {
+            display: block;
+            width: 100%;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 14px;
+            padding: 0.95rem 1.15rem;
+            color: #fff;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .modal-panel .form-textarea {
+            min-height: 7rem;
+            resize: vertical;
+            line-height: 1.5;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.22) #000000;
+        }
+        .modal-panel .form-input:focus,
+        .modal-panel .form-textarea:focus {
+            border-color: rgba(255,255,255,0.42);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.06);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            cursor: pointer;
+        }
+
+        .modal-panel {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: min(100%, 32rem);
+            max-height: min(90dvh, 880px);
+            overflow-y: auto;
+            margin: auto;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.65);
+        }
+        @media (min-width: 640px) {
+            .modal-panel { max-width: min(100%, 40rem); }
+        }
+        .modal-panel--document {
+            max-width: min(100%, 44rem);
+            max-height: min(88dvh, 800px);
+        }
+
+        /* Modals: black track + subtle thumb (Join, Contact, Privacy, Safety, etc.) */
+        .modal,
+        .modal-panel {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.2) #000000;
+        }
+        .modal::-webkit-scrollbar,
+        .modal-panel::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        .modal::-webkit-scrollbar-track,
+        .modal-panel::-webkit-scrollbar-track {
+            background: #000000;
+            border-radius: 5px;
+        }
+        .modal::-webkit-scrollbar-thumb,
+        .modal-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.16);
+            border-radius: 5px;
+            border: 2px solid #000000;
+        }
+        .modal::-webkit-scrollbar-thumb:hover,
+        .modal-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.28);
+        }
+        .modal-panel .form-textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-panel .form-textarea::-webkit-scrollbar-track {
+            background: #000000;
+            border-radius: 4px;
+        }
+        .modal-panel .form-textarea::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 4px;
+            border: 2px solid #000000;
+        }
+        .modal-panel .form-textarea::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-document-body {
+            color: rgba(255, 255, 255, 0.78);
+            font-weight: 200;
+            font-size: 0.9375rem;
+            line-height: 1.65;
+        }
+        .modal-document-body h4 {
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            font-size: 0.8125rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            margin-bottom: 0.65rem;
+        }
+        .modal-document-body h4:first-child { margin-top: 0; }
+        .modal-document-body p { margin-bottom: 0.85rem; }
+        .modal-document-body ul {
+            margin: 0.5rem 0 1rem 1.1rem;
+            list-style: disc;
+            padding-left: 0.5rem;
+        }
+        .modal-document-body li { margin-bottom: 0.4rem; }
+
+        input:not(.form-input):not(.form-textarea), textarea:not(.form-textarea) {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 14px;
+            width: 100%;
+            color: white;
+            font-weight: 200;
+            outline: none;
+        }
+
+        input:not(.form-input):not(.form-textarea):focus, textarea:not(.form-textarea):focus { border-color: white; }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        /* Prevent iOS zoom on input focus */
+        @media (max-width: 640px) {
+            input, textarea, select {
+                font-size: 16px !important;
+            }
+        }
+
+        .nav-logo {
+            height: 26px;
+            width: auto;
+            object-fit: contain;
+        }
+        @media (min-width: 640px) {
+            .nav-logo { height: 30px; }
+        }
+        @media (min-width: 1024px) {
+            .nav-logo { height: 34px; }
+        }
+        /* Shorter nav CTAs */
+        #navbar .btn-mediva--compact {
+            min-height: 36px;
+            padding: 0.42em 0.95em;
+            font-size: 0.52rem;
+        }
+
+        .footer-logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        @media (min-width: 640px) {
+            .footer-logo { height: 48px; }
+        }
+        @media (min-width: 1024px) {
+            .footer-logo { height: 56px; }
+        }
+
+        /* Hero copy column: container so MEDIVA scales to available width (no mid-word split) */
+        .hero-copy {
+            container-type: inline-size;
+            container-name: hero;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+        /* Single line — never break "MEDIVA"; size follows column (cqw) with vw fallback */
+        .hero-title {
+            white-space: nowrap;
+            line-height: 0.88;
+            word-break: normal;
+            overflow-wrap: normal;
+            letter-spacing: -0.02em;
+            max-width: 100%;
+            font-size: clamp(2.25rem, 9.5vw, 10rem);
+        }
+        @container hero (min-width: 0px) {
+            .hero-title {
+                /* ~6 uppercase letters ≈ 3.2–3.6em wide → cap with ~20cqw */
+                font-size: clamp(2.25rem, min(9.5vw, 20cqw), 13.5rem);
+            }
+        }
+        /* Older browsers: slightly cap title on large split layouts */
+        @media (min-width: 1024px) {
+            @supports not (container-type: inline-size) {
+                .hero-title {
+                    font-size: clamp(2.25rem, 7.5vw, 9rem);
+                }
+            }
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+
+        .scroll-anim {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-anim.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer-link {
+            transition: color 0.3s ease;
+        }
+        .footer-link:hover {
+            color: #fff;
+        }
+
+        .social-icon {
+            width: 22px;
+            height: 22px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+        .social-icon:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="joinModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
+        <div class="modal-backdrop" onclick="closeModal('joinModal')" aria-hidden="true"></div>
+        <div class="modal-panel glass-card p-6 sm:p-8 md:p-11 rounded-2xl sm:rounded-[2rem] w-full relative border border-white/10">
+            <button type="button" onclick="closeModal('joinModal')" class="btn-mediva btn-mediva--icon absolute top-3 right-3 z-10 flex items-center justify-center text-lg leading-none font-light" aria-label="Close">✕</button>
+            <h3 id="joinModalTitle" class="text-3xl sm:text-4xl md:text-5xl h-thin mb-2 pr-12 sm:pr-14">Early Join</h3>
+            <p class="text-white/75 mb-8 sm:mb-10 h-light text-base sm:text-lg leading-relaxed">Register your interest for the Mediva closed beta.</p>
+            <form class="modal-form" onsubmit="handleForm(event, 'Join')">
+                <div class="form-field-grid form-field-grid--2">
+                    <div class="form-field">
+                        <label for="join-name" class="form-label">Full name</label>
+                        <input type="text" id="join-name" name="name" class="form-input" autocomplete="name" required placeholder="Your full name">
+                    </div>
+                    <div class="form-field">
+                        <label for="join-email" class="form-label">Email address</label>
+                        <input type="email" id="join-email" name="email" class="form-input" autocomplete="email" required placeholder="you@example.com">
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label for="join-phone" class="form-label">Phone number</label>
+                    <input type="tel" id="join-phone" name="phone" class="form-input" autocomplete="tel" required placeholder="Your phone number">
+                </div>
+                <button type="submit" class="btn-mediva btn-mediva--block btn-mediva--lg btn-mediva--submit-app mt-2">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+        <div class="modal-backdrop" onclick="closeModal('contactModal')" aria-hidden="true"></div>
+        <div class="modal-panel glass-card p-6 sm:p-8 md:p-11 rounded-2xl sm:rounded-[2rem] w-full relative border border-white/10">
+            <button type="button" onclick="closeModal('contactModal')" class="btn-mediva btn-mediva--icon absolute top-3 right-3 z-10 flex items-center justify-center text-lg leading-none font-light" aria-label="Close">✕</button>
+            <h3 id="contactModalTitle" class="text-3xl sm:text-4xl md:text-5xl h-thin mb-2 pr-12 sm:pr-14">Contact Us</h3>
+            <p class="text-white/75 mb-8 sm:mb-10 h-light text-base sm:text-lg leading-relaxed">Our clinical operations team will respond within 24 hours.</p>
+            <form class="modal-form" onsubmit="handleForm(event, 'Contact')">
+                <div class="form-field">
+                    <label for="contact-name" class="form-label">Full name</label>
+                    <input type="text" id="contact-name" name="name" class="form-input" autocomplete="name" required placeholder="Your name">
+                </div>
+                <div class="form-field">
+                    <label for="contact-info" class="form-label">Email or phone</label>
+                    <input type="text" id="contact-info" name="contact" class="form-input" autocomplete="email" required placeholder="Best way to reach you">
+                </div>
+                <div class="form-field">
+                    <label for="contact-msg" class="form-label">Message</label>
+                    <textarea id="contact-msg" name="message" class="form-textarea" rows="5" required placeholder="How can we help you today?"></textarea>
+                </div>
+                <button type="submit" class="btn-mediva btn-mediva--block btn-mediva--lg btn-mediva--submit-app mt-2">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+        <div class="modal-backdrop" onclick="closeModal('privacyModal')" aria-hidden="true"></div>
+        <div class="modal-panel modal-panel--document glass-card p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-[2rem] w-full relative border border-white/10">
+            <button type="button" onclick="closeModal('privacyModal')" class="btn-mediva btn-mediva--icon absolute top-3 right-3 z-10 flex items-center justify-center text-lg leading-none font-light" aria-label="Close">✕</button>
+            <h3 id="privacyModalTitle" class="text-2xl sm:text-3xl md:text-4xl h-thin mb-2 pr-12">Privacy Policy</h3>
+            <p class="text-white/55 text-sm h-light mb-6">Last updated: March 2025</p>
+            <div class="modal-document-body text-left">
+                <h4>Overview</h4>
+                <p>Mediva Health (“Mediva,” “we,” “us”) respects your privacy. This policy describes how we collect, use, and protect information when you use our website, waitlist, and future services.</p>
+                <h4>Information we collect</h4>
+                <p>We may collect information you provide directly—such as name, email, phone number, and messages submitted through our forms—as well as basic technical data (e.g. device type, browser, and approximate region) needed to operate and secure our services.</p>
+                <h4>How we use information</h4>
+                <ul>
+                    <li>To respond to inquiries and manage beta or early-access sign-ups</li>
+                    <li>To improve our products, safety, and user experience</li>
+                    <li>To comply with law and protect the rights and safety of users and others</li>
+                </ul>
+                <h4>Sharing</h4>
+                <p>We do not sell your personal information. We may share data with service providers who assist our operations under strict confidentiality, or when required by law.</p>
+                <h4>Security</h4>
+                <p>We use reasonable technical and organizational measures to protect your information. No method of transmission over the internet is 100% secure.</p>
+                <h4>Your choices</h4>
+                <p>Where applicable, you may request access, correction, or deletion of your personal information by contacting us at <a href="mailto:info@mediva-health.com" class="text-white/90 underline underline-offset-4 hover:text-white">info@mediva-health.com</a>.</p>
+                <h4>Changes</h4>
+                <p>We may update this policy from time to time. Continued use of our services after changes means you accept the updated policy.</p>
+            </div>
+            <button type="button" onclick="closeModal('privacyModal')" class="btn-mediva btn-mediva--block btn-mediva--lg mt-8">Close</button>
+        </div>
+    </div>
+
+    <div id="safetyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="safetyModalTitle">
+        <div class="modal-backdrop" onclick="closeModal('safetyModal')" aria-hidden="true"></div>
+        <div class="modal-panel modal-panel--document glass-card p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-[2rem] w-full relative border border-white/10">
+            <button type="button" onclick="closeModal('safetyModal')" class="btn-mediva btn-mediva--icon absolute top-3 right-3 z-10 flex items-center justify-center text-lg leading-none font-light" aria-label="Close">✕</button>
+            <h3 id="safetyModalTitle" class="text-2xl sm:text-3xl md:text-4xl h-thin mb-2 pr-12">Safety Protocols</h3>
+            <p class="text-white/55 text-sm h-light mb-6">How Mediva approaches safe, responsible guidance</p>
+            <div class="modal-document-body text-left">
+                <h4>Not a substitute for emergency care</h4>
+                <p>Mediva is not an emergency service. If you believe you or someone else is experiencing a medical emergency, call your local emergency number immediately.</p>
+                <h4>Informational layer</h4>
+                <p>Our tools are designed to support understanding and triage-style information, not to replace diagnosis or treatment by a licensed clinician who knows your full history.</p>
+                <h4>Clinical oversight</h4>
+                <p>We structure our systems around medically reviewed content and ongoing quality checks. Automated outputs may still be incomplete or incorrect; always follow advice from your healthcare provider when it differs from app content.</p>
+                <h4>Data handling</h4>
+                <p>Health-related information you share with us is handled with heightened care. See our Privacy Policy for details on collection, use, and your rights.</p>
+                <h4>Reporting concerns</h4>
+                <p>If you notice unsafe, misleading, or harmful behavior in our services, please report it to <a href="mailto:info@mediva-health.com" class="text-white/90 underline underline-offset-4 hover:text-white">info@mediva-health.com</a> so we can investigate.</p>
+            </div>
+            <button type="button" onclick="closeModal('safetyModal')" class="btn-mediva btn-mediva--block btn-mediva--lg mt-8">Close</button>
+        </div>
+    </div>
+
+    <nav class="relative w-full bg-transparent px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 pt-3 sm:pt-4 md:pt-5 pb-1.5 sm:pb-2 box-border z-10" id="navbar" aria-label="Primary">
+        <div class="w-full min-w-0 max-w-[1920px] mx-auto flex flex-wrap justify-between items-center gap-2 sm:gap-3">
+            <a href="/" class="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded-sm" aria-label="Mediva home">
+                <img src="/images/applogo.png" alt="Mediva" class="nav-logo" width="120" height="48">
+            </a>
+            <div class="flex items-center gap-2.5 sm:gap-4 md:gap-6 shrink-0">
+                <button type="button" onclick="openModal('contactModal')" class="btn-mediva btn-mediva--compact">Contact</button>
+                <button type="button" onclick="openModal('joinModal')" class="btn-mediva btn-mediva--compact">Join Beta</button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="min-h-[100dvh] min-h-screen w-full flex items-center px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 pt-4 sm:pt-6 md:pt-8 pb-12 box-border">
+        <div class="w-full min-w-0 max-w-[1920px] mx-auto grid lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 lg:gap-14 xl:gap-20 2xl:gap-24 items-center">
+            <div class="hero-copy z-10 order-1 text-center lg:text-left min-w-0 w-full">
+                <div class="inline-block px-4 sm:px-5 py-1.5 rounded-full border border-white/10 text-[10px] sm:text-xs uppercase tracking-[0.22em] sm:tracking-[0.28em] mb-8 sm:mb-10 md:mb-12 text-white/70 bg-white/5">
+                    Evidence-based guidance
+                </div>
+                <h1 class="hero-title h-thin tracking-tighter mb-6 sm:mb-8">
+                    MEDIVA
+                </h1>
+                <p class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl h-light text-white/90 leading-[1.08] sm:leading-tight mb-6 sm:mb-8">
+                    World-Class Healthcare, <br class="hidden sm:block"> <span class="serif-italic text-white">Absolutely Free.</span>
+                </p>
+                <p class="text-white/80 h-light leading-relaxed text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto lg:mx-0 mb-8 sm:mb-12">
+                    Get instant, reliable health guidance anytime, anywhere. Built with neural intelligence and clinical oversight.
+                </p>
+
+                <div class="flex flex-wrap gap-4 sm:gap-6 items-center justify-center lg:justify-start">
+                    <button type="button" onclick="openModal('joinModal')" class="btn-mediva btn-mediva--lg btn-mediva--wide-cta">Download</button>
+                    <div class="flex gap-4 opacity-40 grayscale hover:opacity-100 transition-opacity duration-500">
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.1 2.48-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.31-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.24-1.99 1.1-3.15-1.02.04-2.25.68-2.98 1.54-.66.76-1.23 1.93-1.09 3.05 1.13.09 2.24-.61 2.97-1.44z"/></svg>
+                        <svg class="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414C16.8912 15.3414 16.3789 15.8536 16.3789 16.4854C16.3789 17.1173 16.8912 17.6295 17.523 17.6295C18.1549 17.6295 18.6672 17.1173 18.6672 16.4854C18.6672 15.8536 18.1549 15.3414 17.523 15.3414ZM12 15.3414C11.3681 15.3414 10.8559 15.8536 10.8559 16.4854C10.8559 17.1173 11.3681 17.6295 12 17.6295C12.6319 17.6295 13.1441 17.1173 13.1441 16.4854C13.1441 15.8536 12.6319 15.3414 12 15.3414ZM6.47697 15.3414C5.84511 15.3414 5.33285 15.8536 5.33285 16.4854C5.33285 17.1173 5.84511 17.6295 6.47697 17.6295C7.10882 17.6295 7.62108 17.1173 7.62108 16.4854C7.62108 15.8536 7.10882 15.3414 6.47697 15.3414ZM18.1189 11.6441L19.9572 8.45999C20.0653 8.27278 20.001 8.03264 19.8138 7.92455C19.6266 7.81647 19.3865 7.8807 19.2784 8.06791L17.4124 11.3005C15.8778 10.5989 14.0203 10.1982 12 10.1982C9.97967 10.1982 8.12217 10.5989 6.58757 11.3005L4.72156 8.06791C4.61347 7.8807 4.37333 7.81647 4.18612 7.92455C3.99891 8.03264 3.93468 8.27278 4.04277 8.45999L5.88107 11.6441C2.41725 13.5097 0.0862024 17.1245 0.00414603 21.3783C-0.00282136 21.7397 0.284725 22.043 0.646176 22.0499L23.3538 22.0499C23.7153 22.043 24.0028 21.7397 23.9959 21.3783C23.9138 17.1245 21.5827 13.5097 18.1189 11.6441Z"/></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center lg:justify-end order-2 w-full min-w-0 shrink">
+                <img src="/images/Talk%20bubble.svg" alt="Mediva conversational interface" class="hero-orb select-none pointer-events-none mx-auto lg:mx-0" width="640" height="640" decoding="async">
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 sm:py-20 md:py-24 scroll-anim w-full box-border">
+        <div class="w-full min-w-0 px-0 sm:px-6 md:px-10 lg:px-14 xl:px-20 max-w-[1920px] mx-auto">
+            <div id="medivaShowcase" class="relative w-full aspect-video rounded-none sm:rounded-2xl md:rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden border-y sm:border border-white/10 bg-[#080808] group">
+                <button type="button" id="showcaseFullscreenBtn" class="btn-mediva btn-mediva--icon showcase-fs-btn" aria-label="Enter fullscreen" title="Fullscreen">
+                    <svg class="w-5 h-5 icon-enter-fs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M9 3H5a2 2 0 0 0-2 2v4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M15 21h4a2 2 0 0 0 2-2v-4"/>
+                    </svg>
+                    <svg class="w-5 h-5 icon-exit-fs hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M4 14v4h4M20 10V6h-4M4 10V6h4M20 14v4h-4M14 4h4v4M10 20H6v-4"/>
+                    </svg>
+                </button>
+                
+                <!-- Mute/Unmute Button -->
+                <button type="button" id="muteToggleBtn" class="btn-mediva btn-mediva--icon showcase-mute-btn" aria-label="Toggle mute" title="Mute">
+                    <svg class="w-5 h-5 icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/>
+                    </svg>
+                    <svg class="w-5 h-5 icon-sound-off hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M11 5L6 9H2v6h4l5 4V5zM1 1l22 22M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/>
+                    </svg>
+                </button>
+                
+                <!-- Video Element -->
+                <video class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline id="showcaseVideo" poster="/images/background.png">
+                    <source src="/assets/showcase.mp4" type="video/mp4">
+                    <!-- Fallback background if video not available -->
+                </video>
+                
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10 pointer-events-none"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center z-20 px-4">
+                    <button type="button" class="btn-mediva btn-mediva--play sm:hover:scale-105 transition-transform" aria-label="Play showcase">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-white drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <p class="mt-6 text-xs sm:text-sm uppercase tracking-[0.35em] sm:tracking-[0.45em] text-white/75 text-center">Experience the interface</p>
+                </div>
+                <div class="showcase-bg absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80')] bg-cover bg-center group-hover:scale-105 transition-transform duration-1000"></div>
+                <div class="absolute top-0 left-0 w-full h-[1px] bg-white/30 shadow-[0_0_20px_white] animate-[scan_8s_infinite] pointer-events-none z-[5]"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 sm:py-24 md:py-32 w-full px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 scroll-anim box-border">
+        <div class="w-full min-w-0 max-w-[1920px] mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 items-start">
+            <div class="text-center lg:text-left min-w-0">
+                <h2 class="text-[clamp(2.75rem,7vw,7.5rem)] h-thin mb-8 sm:mb-10 md:mb-12 leading-[0.92] sm:leading-none">A thousand <br class="hidden sm:block"> doctors in <br class="hidden sm:block"> your <span class="serif-italic">pocket</span>.</h2>
+                <p class="text-white/80 h-light text-lg sm:text-xl md:text-2xl leading-relaxed mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto lg:mx-0">
+                    Mediva isn't just an app, it's a clinical ecosystem. We've synthesized millions of medical journals, case studies, and specialist insights into a singular, conversational interface.
+                </p>
+                <div class="flex justify-center lg:justify-start gap-4">
+                    <button type="button" onclick="openModal('joinModal')" class="btn-mediva btn-mediva--lg btn-mediva--wide-cta btn-mediva--wide-cta--long">Start</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 min-w-0">
+                <div class="glass-card p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-[2rem] min-w-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white/5 rounded-full flex items-center justify-center mb-6 text-sm text-white/65">01</div>
+                    <h4 class="text-xl sm:text-2xl h-med mb-4">Neural Analysis</h4>
+                    <p class="text-sm sm:text-base text-white/75 leading-relaxed h-light italic">Real-time symptom mapping using state-of-the-art clinical models.</p>
+                </div>
+                <div class="glass-card p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-[2rem] min-w-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white/5 rounded-full flex items-center justify-center mb-6 text-sm text-white/65">02</div>
+                    <h4 class="text-xl sm:text-2xl h-med mb-4">Verified Care</h4>
+                    <p class="text-sm sm:text-base text-white/75 leading-relaxed h-light italic">Every automated response is audited by our board of medical directors.</p>
+                </div>
+                <div class="glass-card p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-[2rem] min-w-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white/5 rounded-full flex items-center justify-center mb-6 text-sm text-white/65">03</div>
+                    <h4 class="text-xl sm:text-2xl h-med mb-4">Zero Friction</h4>
+                    <p class="text-sm sm:text-base text-white/75 leading-relaxed h-light italic">No waiting rooms. No insurance hurdles. Just immediate answers.</p>
+                </div>
+                <div class="glass-card p-6 sm:p-8 lg:p-10 rounded-2xl sm:rounded-[2rem] min-w-0">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 bg-white/5 rounded-full flex items-center justify-center mb-6 text-sm text-white/65">04</div>
+                    <h4 class="text-xl sm:text-2xl h-med mb-4">Privacy First</h4>
+                    <p class="text-sm sm:text-base text-white/75 leading-relaxed h-light italic">End-to-end encryption for your most sensitive health data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 sm:py-24 md:py-32 w-full px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 bg-[#030303] scroll-anim box-border">
+        <div class="w-full min-w-0 max-w-[1920px] mx-auto">
+            <p class="text-center text-[10px] sm:text-xs uppercase tracking-[0.35em] text-white/45 mb-4 h-med">FAQ</p>
+            <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl h-thin mb-12 sm:mb-16 md:mb-20 text-center italic px-2 text-white">Questions &amp; Clarity</h2>
+            <div class="space-y-3 sm:space-y-4 md:space-y-5 max-w-5xl mx-auto">
+                <details class="group glass-card rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.07]">
+                    <summary class="p-5 sm:p-6 md:p-8 cursor-pointer list-none flex justify-between items-start sm:items-center gap-4 text-lg sm:text-xl md:text-2xl h-light text-left text-white">
+                        <span class="flex-1 min-w-0">Is Mediva a replacement for my doctor?</span>
+                        <span class="group-open:rotate-180 transition-transform shrink-0 mt-0.5 sm:mt-0 text-2xl text-white/50" aria-hidden="true">↓</span>
+                    </summary>
+                    <div class="px-5 sm:px-6 md:px-8 pb-5 sm:pb-6 md:pb-8 text-white/78 h-light text-base sm:text-lg md:text-xl leading-relaxed border-t border-white/[0.06] pt-4 sm:pt-5">
+                        Mediva acts as a triage and informational layer. While we provide clinically-verified guidance, we are designed to work alongside your primary care physician, not replace them for critical emergencies or physical procedures.
+                    </div>
+                </details>
+                <details class="group glass-card rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.07]">
+                    <summary class="p-5 sm:p-6 md:p-8 cursor-pointer list-none flex justify-between items-start sm:items-center gap-4 text-lg sm:text-xl md:text-2xl h-light text-left text-white">
+                        <span class="flex-1 min-w-0">How secure is my medical data?</span>
+                        <span class="group-open:rotate-180 transition-transform shrink-0 text-2xl text-white/50" aria-hidden="true">↓</span>
+                    </summary>
+                    <div class="px-5 sm:px-6 md:px-8 pb-5 sm:pb-6 md:pb-8 text-white/78 h-light text-base sm:text-lg md:text-xl leading-relaxed border-t border-white/[0.06] pt-4 sm:pt-5">
+                        End-to-end encryption for your most sensitive health data. Mediva is fully HIPAA and GDPR compliant, ensuring that your records remain strictly confidential and under your control.
+                    </div>
+                </details>
+                <details class="group glass-card rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.07]">
+                    <summary class="p-5 sm:p-6 md:p-8 cursor-pointer list-none flex justify-between items-start sm:items-center gap-4 text-lg sm:text-xl md:text-2xl h-light text-left text-white">
+                        <span class="flex-1 min-w-0">How is the AI trained?</span>
+                        <span class="group-open:rotate-180 transition-transform shrink-0 text-2xl text-white/50" aria-hidden="true">↓</span>
+                    </summary>
+                    <div class="px-5 sm:px-6 md:px-8 pb-5 sm:pb-6 md:pb-8 text-white/78 h-light text-base sm:text-lg md:text-xl leading-relaxed border-t border-white/[0.06] pt-4 sm:pt-5">
+                        Our neural network is trained exclusively on peer-reviewed medical journals and validated clinical data. We have a dedicated Clinical Review Board of licensed doctors who continuously audit model performance.
+                    </div>
+                </details>
+                <details class="group glass-card rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.07]">
+                    <summary class="p-5 sm:p-6 md:p-8 cursor-pointer list-none flex justify-between items-start sm:items-center gap-4 text-lg sm:text-xl md:text-2xl h-light text-left text-white">
+                        <span class="flex-1 min-w-0">Is Mediva really free? Are there hidden fees?</span>
+                        <span class="group-open:rotate-180 transition-transform shrink-0 text-2xl text-white/50" aria-hidden="true">↓</span>
+                    </summary>
+                    <div class="px-5 sm:px-6 md:px-8 pb-5 sm:pb-6 md:pb-8 text-white/78 h-light text-base sm:text-lg md:text-xl leading-relaxed border-t border-white/[0.06] pt-4 sm:pt-5">
+                        Core guidance and conversational triage are free for users during our rollout. We may introduce optional premium features in the future, but we will always clearly disclose pricing before you opt in—no surprise charges.
+                    </div>
+                </details>
+                <details class="group glass-card rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.07]">
+                    <summary class="p-5 sm:p-6 md:p-8 cursor-pointer list-none flex justify-between items-start sm:items-center gap-4 text-lg sm:text-xl md:text-2xl h-light text-left text-white">
+                        <span class="flex-1 min-w-0">What should I do in a medical emergency?</span>
+                        <span class="group-open:rotate-180 transition-transform shrink-0 text-2xl text-white/50" aria-hidden="true">↓</span>
+                    </summary>
+                    <div class="px-5 sm:px-6 md:px-8 pb-5 sm:pb-6 md:pb-8 text-white/78 h-light text-base sm:text-lg md:text-xl leading-relaxed border-t border-white/[0.06] pt-4 sm:pt-5">
+                        Mediva is not for emergencies. If you believe you or someone else is in immediate danger, call your local emergency number right away (e.g. 911 in the US). Use Mediva only for non-urgent questions and general health information.
+                    </div>
+                </details>
+                <details class="group glass-card rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.07]">
+                    <summary class="p-5 sm:p-6 md:p-8 cursor-pointer list-none flex justify-between items-start sm:items-center gap-4 text-lg sm:text-xl md:text-2xl h-light text-left text-white">
+                        <span class="flex-1 min-w-0">Where is Mediva available?</span>
+                        <span class="group-open:rotate-180 transition-transform shrink-0 text-2xl text-white/50" aria-hidden="true">↓</span>
+                    </summary>
+                    <div class="px-5 sm:px-6 md:px-8 pb-5 sm:pb-6 md:pb-8 text-white/78 h-light text-base sm:text-lg md:text-xl leading-relaxed border-t border-white/[0.06] pt-4 sm:pt-5">
+                        We are expanding region by region to comply with local healthcare and privacy regulations. Join the beta to be notified when Mediva launches in your country, and to get early access when your region goes live.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <footer class="w-full pt-24 sm:pt-32 md:pt-40 pb-10 sm:pb-12 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 border-t border-white/5 box-border">
+        <div class="w-full min-w-0 max-w-[1920px] mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 lg:gap-16 mb-20 sm:mb-24 md:mb-32">
+                <div class="col-span-1 sm:col-span-2 lg:col-span-2 text-center sm:text-left">
+                    <img src="/images/applogo.png" alt="Mediva" class="footer-logo mb-8 sm:mb-10" width="140" height="56">
+                    <h3 class="text-3xl sm:text-4xl md:text-5xl h-thin mb-8 sm:mb-10 leading-tight text-white/85 max-w-2xl mx-auto sm:mx-0">
+                        Bridging the gap between <span class="text-white h-light">intelligence</span> and <span class="text-white h-light">healthcare</span>.
+                    </h3>
+                    <div class="group inline-flex flex-col">
+                        <span class="text-xs sm:text-sm uppercase tracking-[0.3em] sm:tracking-[0.38em] text-white/55 mb-2 h-med">Inquiries</span>
+                        <a href="mailto:info@mediva-health.com" class="text-xl sm:text-2xl h-med hover:underline decoration-white/20 underline-offset-8 transition-all break-all sm:break-normal">info@mediva-health.com</a>
+                    </div>
+                </div>
+
+                <div class="text-center sm:text-left">
+                    <h5 class="text-xs sm:text-sm uppercase tracking-[0.28em] sm:tracking-[0.38em] text-white/55 mb-6 sm:mb-8 h-med">Product</h5>
+                    <ul class="space-y-4 text-base sm:text-lg text-white/78 h-light">
+                        <li><a href="#" onclick="event.preventDefault(); openModal('joinModal');" class="footer-link">Early Join</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); openModal('safetyModal');" class="footer-link">Safety Protocols</a></li>
+                    </ul>
+                </div>
+
+                <div class="text-center sm:text-left">
+                    <h5 class="text-xs sm:text-sm uppercase tracking-[0.28em] sm:tracking-[0.38em] text-white/55 mb-6 sm:mb-8 h-med">Legal</h5>
+                    <ul class="space-y-4 text-base sm:text-lg text-white/78 h-light">
+                        <li><a href="#" onclick="event.preventDefault(); openModal('privacyModal');" class="footer-link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-10 sm:pt-12 border-t border-white/5 gap-6 sm:gap-8">
+                <div class="flex flex-col items-center md:items-start gap-2 text-center md:text-left">
+                    <p class="text-[10px] sm:text-xs tracking-[0.12em] sm:tracking-[0.25em] md:tracking-[0.4em] text-white/50 uppercase h-med max-w-md md:max-w-none leading-relaxed">© 2026 MEDIVA HEALTH</p>
+                    
+                </div>
+
+                <div class="flex gap-6 items-center">
+                    <a href="https://x.com/yourmediva112" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/mediva-health?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5a1.75 1.75 0 01-1.75 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.5c1.55 0 3.4 1.08 3.4 3.83z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://www.instagram.com/medivahealth?igsh=OTk1cnhoMmpmdGho&utm_source=qr" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        async function handleForm(e, type) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            
+            // Disable button and show loading state
+            btn.disabled = true;
+            btn.innerText = "Submitting...";
+            btn.style.opacity = "0.7";
+
+            let payload = { type };
+            if (type === 'Join') {
+                payload.name = document.getElementById('join-name').value.trim();
+                payload.email = document.getElementById('join-email').value.trim();
+                payload.phone = document.getElementById('join-phone').value.trim();
+            } else {
+                payload.name = document.getElementById('contact-name').value.trim();
+                payload.contactInfo = document.getElementById('contact-info').value.trim();
+                payload.message = document.getElementById('contact-msg').value.trim();
+            }
+
+            try {
+                const res = await fetch('/api/submissions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) throw new Error(data.error || 'Something went wrong');
+                
+                // Success - change button text to "Submitted ✓"
+                btn.innerText = "Submitted ✓";
+                btn.style.backgroundColor = "rgba(76, 175, 80, 0.3)";
+                btn.style.borderColor = "rgba(76, 175, 80, 0.5)";
+                form.reset();
+                
+                // Close modal after 1.5 seconds
+                setTimeout(() => {
+                    closeModal(type === 'Join' ? 'joinModal' : 'contactModal');
+                    // Reset button after closing
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.innerText = originalText;
+                        btn.style.backgroundColor = "";
+                        btn.style.borderColor = "";
+                        btn.style.opacity = "";
+                    }, 300);
+                }, 1500);
+            } catch (err) {
+                alert(err.message || 'Could not submit. Please try again.');
+                btn.disabled = false;
+                btn.innerText = originalText;
+                btn.style.opacity = "";
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+                if (fsEl) {
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                    return;
+                }
+                closeModal('joinModal');
+                closeModal('contactModal');
+                closeModal('privacyModal');
+                closeModal('safetyModal');
+            }
+        });
+
+        (function initShowcaseFullscreen() {
+            const stage = document.getElementById('medivaShowcase');
+            const btn = document.getElementById('showcaseFullscreenBtn');
+            if (!stage || !btn) return;
+
+            const iconIn = btn.querySelector('.icon-enter-fs');
+            const iconOut = btn.querySelector('.icon-exit-fs');
+
+            function isStageFullscreen() {
+                return (document.fullscreenElement === stage) ||
+                    (document.webkitFullscreenElement === stage);
+            }
+
+            function updateFsUi() {
+                const on = isStageFullscreen();
+                btn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Enter fullscreen');
+                btn.setAttribute('title', on ? 'Exit fullscreen' : 'Fullscreen');
+                if (iconIn && iconOut) {
+                    iconIn.classList.toggle('hidden', on);
+                    iconOut.classList.toggle('hidden', !on);
+                }
+            }
+
+            function requestFs(el) {
+                if (el.requestFullscreen) return el.requestFullscreen();
+                if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+                return Promise.reject(new Error('Fullscreen not supported'));
+            }
+
+            function exitFs() {
+                if (document.exitFullscreen) return document.exitFullscreen();
+                if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+            }
+
+            btn.addEventListener('click', () => {
+                if (isStageFullscreen()) {
+                    exitFs();
+                } else {
+                    requestFs(stage).catch(() => {});
+                }
+            });
+
+            document.addEventListener('fullscreenchange', updateFsUi);
+            document.addEventListener('webkitfullscreenchange', updateFsUi);
+            updateFsUi();
+        })();
+
+        // Video mute/unmute toggle
+        (function initVideoMute() {
+            const video = document.getElementById('showcaseVideo');
+            const muteBtn = document.getElementById('muteToggleBtn');
+            
+            if (!video || !muteBtn) return;
+
+            const soundOnIcon = muteBtn.querySelector('.icon-sound-on');
+            const soundOffIcon = muteBtn.querySelector('.icon-sound-off');
+
+            function updateMuteUi() {
+                if (video.muted) {
+                    muteBtn.setAttribute('aria-label', 'Unmute');
+                    muteBtn.setAttribute('title', 'Unmute');
+                    if (soundOnIcon && soundOffIcon) {
+                        soundOnIcon.classList.add('hidden');
+                        soundOffIcon.classList.remove('hidden');
+                    }
+                } else {
+                    muteBtn.setAttribute('aria-label', 'Mute');
+                    muteBtn.setAttribute('title', 'Mute');
+                    if (soundOnIcon && soundOffIcon) {
+                        soundOnIcon.classList.remove('hidden');
+                        soundOffIcon.classList.add('hidden');
+                    }
+                }
+            }
+
+            muteBtn.addEventListener('click', () => {
+                video.muted = !video.muted;
+                updateMuteUi();
+            });
+
+            // Initialize UI state
+            updateMuteUi();
+        })();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.05 });
+
+        document.querySelectorAll('.scroll-anim').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

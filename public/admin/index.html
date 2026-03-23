@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mediva — Admin</title>
+  <link rel="icon" type="image/png" href="/images/applogo1.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    html { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.2) transparent; }
+    html::-webkit-scrollbar { width: 6px; }
+    html::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 200;
+      background: #000;
+      color: #fff;
+      min-height: 100dvh;
+    }
+    .h-thin { font-weight: 100; }
+    .h-light { font-weight: 200; }
+    .h-med { font-weight: 500; }
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .sidebar-link { transition: color 0.2s, background 0.2s; }
+    .sidebar-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .btn-mediva {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      width: fit-content;
+      max-width: 100%;
+      position: relative;
+      isolation: isolate;
+      border: none;
+      border-radius: 9999px;
+      overflow: hidden;
+      background: transparent;
+      color: #fff;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      line-height: 1.2;
+      padding: 0.75em 1.5em;
+      min-height: 48px;
+      cursor: pointer;
+      transition: filter 0.25s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-mediva::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background-color: #0a0a0a;
+      background-image: url('/assets/button.svg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100% 100%;
+      -webkit-background-size: 100% 100%;
+      pointer-events: none;
+    }
+    .btn-mediva:hover { filter: brightness(1.14); }
+    .btn-mediva:active { transform: scale(0.98); }
+    .btn-mediva--block {
+      width: 100%;
+      display: flex;
+      white-space: normal;
+      text-align: center;
+      padding-left: clamp(1rem, 4vw, 2rem);
+      padding-right: clamp(1rem, 4vw, 2rem);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .btn-mediva--sm {
+      min-height: 42px;
+      padding: 0.5em 1.1em;
+      font-size: 0.55rem;
+    }
+    .btn-mediva--lg {
+      min-height: 52px;
+      padding: 0.75em clamp(1.1rem, 3.2vw, 2.2rem);
+      font-size: clamp(0.64rem, 1.4vw, 0.76rem);
+    }
+    .btn-mediva--submit-app {
+      width: 100%;
+      min-height: 52px;
+      padding: 0.85em clamp(1.25rem, 8vw, 3rem);
+      font-size: clamp(0.62rem, 2.8vw, 0.78rem);
+      letter-spacing: 0.08em;
+      line-height: 1.3;
+    }
+    .btn-mediva--danger {
+      color: rgba(252, 165, 165, 0.95);
+    }
+    .btn-mediva--danger:hover {
+      filter: brightness(1.12) contrast(1.05);
+    }
+  </style>
+</head>
+<body class="overflow-x-hidden">
+  <div id="loginView" class="min-h-[100dvh] flex items-center justify-center p-4 sm:p-6">
+    <div class="glass w-full max-w-md rounded-2xl sm:rounded-3xl p-8 sm:p-10">
+      <div class="flex justify-center mb-8">
+        <img src="/images/applogo.png" alt="Mediva" class="h-12 sm:h-14 w-auto">
+      </div>
+      <h1 class="text-2xl sm:text-3xl h-thin text-center mb-2">Admin</h1>
+      <p class="text-white/60 h-light text-sm text-center mb-8">Sign in to view submissions</p>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-[10px] uppercase tracking-[0.25em] text-white/45 mb-2 h-med">Email</label>
+          <input type="email" id="loginEmail" required autocomplete="username"
+            class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3.5 text-white h-light placeholder-white/30 focus:border-white/40 focus:outline-none text-base">
+        </div>
+        <div>
+          <label class="block text-[10px] uppercase tracking-[0.25em] text-white/45 mb-2 h-med">Password</label>
+          <input type="password" id="loginPassword" required autocomplete="current-password"
+            class="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3.5 text-white h-light placeholder-white/30 focus:border-white/40 focus:outline-none text-base">
+        </div>
+        <p id="loginError" class="text-red-400 text-sm h-light hidden"></p>
+        <button type="submit" class="btn-mediva btn-mediva--block btn-mediva--lg btn-mediva--submit-app mt-2">
+          Sign in
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="dashView" class="hidden min-h-[100dvh] flex flex-col lg:flex-row">
+    <!-- Sidebar -->
+    <aside class="w-full lg:w-64 xl:w-72 shrink-0 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-row lg:flex-col lg:min-h-[100dvh] bg-[#050505]">
+      <div class="flex lg:flex-col items-center justify-between lg:justify-start gap-4 p-4 sm:p-6 w-full">
+        <div class="flex items-center gap-3 min-w-0">
+          <img src="/images/applogo.png" alt="" class="h-9 w-auto shrink-0">
+          <div class="min-w-0 hidden sm:block lg:block">
+            <div class="text-xs uppercase tracking-[0.2em] text-white/40 h-med truncate">Mediva</div>
+            <div class="text-sm h-light text-white/80 truncate" id="adminEmailDisplay"></div>
+          </div>
+        </div>
+        <button type="button" id="btnLogout" class="btn-mediva btn-mediva--sm shrink-0">
+          Log out
+        </button>
+      </div>
+      <nav class="hidden lg:flex flex-col gap-1 px-3 pb-6 flex-1">
+        <span class="px-3 py-2 text-[10px] uppercase tracking-[0.3em] text-white/35 h-med">Menu</span>
+        <span class="sidebar-link px-3 py-3 rounded-xl text-white/90 h-light text-sm cursor-default bg-white/5 border border-white/5">Responses</span>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 min-w-0 flex flex-col">
+      <header class="border-b border-white/10 px-4 sm:px-8 py-5 sm:py-6 bg-black/40 backdrop-blur-xl">
+        <h2 class="text-xl sm:text-2xl h-thin tracking-tight">User responses</h2>
+        <p class="text-sm sm:text-base text-white/55 h-light mt-1">Early Join &amp; Contact submissions from the landing page</p>
+      </header>
+      <div class="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <p class="text-white/45 text-xs sm:text-sm h-light" id="countLabel">Loading…</p>
+          <button type="button" id="btnRefresh" class="btn-mediva btn-mediva--sm self-start sm:self-auto">
+            Refresh
+          </button>
+        </div>
+        <div id="emptyState" class="hidden glass rounded-2xl p-12 text-center text-white/50 h-light">
+          No submissions yet.
+        </div>
+        <div id="listContainer" class="space-y-4"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const loginView = document.getElementById('loginView');
+    const dashView = document.getElementById('dashView');
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    const listContainer = document.getElementById('listContainer');
+    const emptyState = document.getElementById('emptyState');
+    const countLabel = document.getElementById('countLabel');
+    const adminEmailDisplay = document.getElementById('adminEmailDisplay');
+
+    async function api(path, opts = {}) {
+      const headers = { ...opts.headers };
+      if (opts.body != null && typeof opts.body === 'string') {
+        headers['Content-Type'] = 'application/json';
+      }
+      const r = await fetch(path, {
+        ...opts,
+        headers,
+        credentials: 'same-origin',
+      });
+      const text = await r.text();
+      let data;
+      try { data = text ? JSON.parse(text) : {}; } catch { data = {}; }
+      if (!r.ok) throw new Error(data.error || r.statusText);
+      return data;
+    }
+
+    async function checkSession() {
+      try {
+        const me = await api('/api/admin/me');
+        if (me.ok) {
+          adminEmailDisplay.textContent = me.email || '';
+          loginView.classList.add('hidden');
+          dashView.classList.remove('hidden');
+          await loadSubmissions();
+          return true;
+        }
+      } catch (_) {}
+      loginView.classList.remove('hidden');
+      dashView.classList.add('hidden');
+      return false;
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.classList.add('hidden');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      try {
+        await api('/api/admin/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password }),
+        });
+        await checkSession();
+      } catch (err) {
+        loginError.textContent = err.message || 'Login failed';
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('btnLogout').addEventListener('click', async () => {
+      try {
+        await api('/api/admin/logout', { method: 'POST', body: '{}' });
+      } catch (_) {}
+      loginView.classList.remove('hidden');
+      dashView.classList.add('hidden');
+      listContainer.innerHTML = '';
+    });
+
+    document.getElementById('btnRefresh').addEventListener('click', loadSubmissions);
+
+    function formatDate(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+      } catch { return iso; }
+    }
+
+    function cardHtml(s) {
+      const d = s.data || {};
+      let body = '';
+      if (s.type === 'Join') {
+        body = `
+          <div class="grid sm:grid-cols-2 gap-3 text-sm h-light">
+            <div><span class="text-white/40 text-xs uppercase tracking-wider block mb-1">Name</span>${escapeHtml(d.name || '—')}</div>
+            <div><span class="text-white/40 text-xs uppercase tracking-wider block mb-1">Email</span>${escapeHtml(d.email || '—')}</div>
+            <div class="sm:col-span-2"><span class="text-white/40 text-xs uppercase tracking-wider block mb-1">Phone</span>${escapeHtml(d.phone || '—')}</div>
+          </div>`;
+      } else {
+        body = `
+          <div class="space-y-3 text-sm h-light">
+            <div><span class="text-white/40 text-xs uppercase tracking-wider block mb-1">Name</span>${escapeHtml(d.name || '—')}</div>
+            <div><span class="text-white/40 text-xs uppercase tracking-wider block mb-1">Email / Phone</span>${escapeHtml(d.contactInfo || '—')}</div>
+            <div><span class="text-white/40 text-xs uppercase tracking-wider block mb-1">Message</span><div class="mt-1 text-white/85 whitespace-pre-wrap">${escapeHtml(d.message || '—')}</div></div>
+          </div>`;
+      }
+      return `
+        <article class="glass rounded-2xl p-5 sm:p-6 overflow-hidden" data-id="${escapeHtml(s.id)}">
+          <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+            <div>
+              <span class="inline-block text-[10px] uppercase tracking-[0.25em] px-2.5 py-1 rounded-full border ${s.type === 'Join' ? 'border-emerald-500/30 text-emerald-400/90' : 'border-sky-500/30 text-sky-400/90'}">${escapeHtml(s.type)}</span>
+              <p class="text-xs text-white/40 mt-2 h-light">${formatDate(s.createdAt)}</p>
+            </div>
+            <button type="button" class="btn-mediva btn-mediva--sm btn-mediva--danger delete-btn shrink-0" data-id="${escapeHtml(s.id)}">
+              Delete
+            </button>
+          </div>
+          ${body}
+        </article>`;
+    }
+
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function loadSubmissions() {
+      countLabel.textContent = 'Loading…';
+      listContainer.innerHTML = '';
+      try {
+        const { submissions } = await api('/api/submissions');
+        const list = submissions || [];
+        countLabel.textContent = list.length === 1 ? '1 submission' : `${list.length} submissions`;
+        if (!list.length) {
+          emptyState.classList.remove('hidden');
+          return;
+        }
+        emptyState.classList.add('hidden');
+        listContainer.innerHTML = list.map(cardHtml).join('');
+        listContainer.querySelectorAll('.delete-btn').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.getAttribute('data-id');
+            if (!confirm('Delete this submission permanently?')) return;
+            btn.disabled = true;
+            try {
+              await api('/api/submissions/' + encodeURIComponent(id), { method: 'DELETE' });
+              await loadSubmissions();
+            } catch (e) {
+              alert(e.message || 'Delete failed');
+              btn.disabled = false;
+            }
+          });
+        });
+      } catch (e) {
+        countLabel.textContent = 'Could not load';
+        emptyState.textContent = 'Session expired or error. Log in again.';
+        emptyState.classList.remove('hidden');
+      }
+    }
+
+    checkSession();
+  </script>
+</body>
+</html>
