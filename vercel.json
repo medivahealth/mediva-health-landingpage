@@ -9,31 +9,7 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "server.js"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "public/images/$1"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "public/assets/$1"
-    },
-    {
-      "src": "/admin/(.*)",
-      "dest": "public/admin/$1"
-    },
-    {
-      "src": "/(.*)\\.(jpg|jpeg|png|gif|svg|webp|ico|css|js|woff|woff2|ttf|eot|mp4)",
-      "dest": "public/$1.$2"
-    },
-    {
-      "src": "/$",
-      "dest": "server.js"
-    },
-    {
-      "src": "/((?!api/|images/|assets/|admin/).*)",
+      "src": "/(.*)",
       "dest": "server.js"
     }
   ],

@@ -27,6 +27,7 @@ const SESSION_SECRET =
 
 let useMongo = false;
 let allowFileStorage = true;
+let initPromise;
 
 app.set("trust proxy", 1);
 
@@ -57,6 +58,20 @@ app.use(
     },
   })
 );
+
+// Ensure async initialization (Mongo connection mode) completes before API calls.
+app.use("/api", async (_req, res, next) => {
+  try {
+    if (initPromise) await initPromise;
+    next();
+  } catch (err) {
+    console.error("Initialization error:", err?.message || err);
+    res.status(503).json({
+      ok: false,
+      error: "Service initialization failed. Check MongoDB configuration.",
+    });
+  }
+});
 
 async function ensureDataFile() {
   await fs.mkdir(dataDir, { recursive: true });
@@ -262,6 +277,9 @@ async function start() {
   // On Vercel/Production, MongoDB is REQUIRED
   const isProduction = process.env.NODE_ENV === 'production';
   const isVercel = process.env.VERCEL === "1";
+  // Never use file fallback by default in production/serverless.
+  allowFileStorage = !isProduction;
+  useMongo = false;
 
   if (uri) {
     try {
@@ -321,4 +339,4 @@ async function start() {
 // Export for Vercel serverless
 module.exports = app;
 
-start();
+initPromise = start();
